@@ -9,6 +9,7 @@ from .serializers import DossierMedicalSerializer, PatientSerializer, SoinSerial
 from rest_framework.decorators import action
 import logging
 from rest_framework.exceptions import AuthenticationFailed
+import requests
 
 
 
@@ -325,7 +326,8 @@ class OrdonnanceViewSet(viewsets.ModelViewSet):
                     'date': ordonnance.date,
                     'medecin': str(ordonnance.medecin),
                     'dpi_patient': str(ordonnance.dpi_patient),
-                    'traitements': traitements_data
+                    'traitements': traitements_data,
+                    'status': ordonnance.status
                 }
 
                 ordonnances_data.append(ordonnance_data)
@@ -336,3 +338,26 @@ class OrdonnanceViewSet(viewsets.ModelViewSet):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=False, methods=['post'])
+    def envoyer_a_sgph(self, request):
+        try:
+            # Step 1: Fetch all ordonnances using the existing API endpoint
+            response = requests.get("http://localhost:8000/dossier_patient/api/ordonnances/lister_ordonnances")
+            if response.status_code != 200:
+                    return Response({"error": "Failed to fetch ordonnances from lister_ordonnances API."},status=400)
+            ordonnances_data = response.json().get("ordonnances", [])
+            # Step 2: Simulate sending data to SGPH ,Simulate SGPH's response with dummy validation
+            sgph_response = {"ordonnances": []}
+            for ordonnance in ordonnances_data:
+                sgph_response["ordonnances"].append({
+                    "id_ordonnance": ordonnance["id_ordonnance"],
+                    "status": "Validée" if ordonnance["id_ordonnance"] % 2 == 0 else "Rejetée"})
+            # Step 3: Update ordonnances' statuses based on simulated SGPH response
+            for ordonnance_response in sgph_response["ordonnances"]:
+                ordonnance = Ordonnance.objects.get(id_ordonnance=ordonnance_response["id_ordonnance"])
+                ordonnance.status = ordonnance_response["status"]
+                ordonnance.save()
+            return Response({"message": "Ordonnances processed successfully!", "response": sgph_response},status=200)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)

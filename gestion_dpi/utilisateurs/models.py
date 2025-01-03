@@ -176,6 +176,7 @@ class Ordonnance(models.Model):
     date = models.DateField()  # Date de l'ordonnance
     medecin = models.ForeignKey('Medecin', on_delete=models.CASCADE, default=None)  # Relation avec Medecin
     dpi_patient = models.ForeignKey('dossier_patient.DossierMedical', on_delete=models.CASCADE, default=None, related_name='ordonnances')  # Relation avec Patient (Dossier)
+    status = models.CharField(max_length=20, default="En attente") #pour la validation de l ordonnance
 
     def __str__(self):
         return f'Ordonnance {self.dpi_patient.patient} ,{self.medecin} ,{self.date}'

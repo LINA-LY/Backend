@@ -113,7 +113,7 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ordonnance
-        fields = ['id_ordonnance', 'date', 'medecin', 'dpi_patient', 'medicaments']
+        fields = ['id_ordonnance', 'date', 'medecin', 'dpi_patient', 'medicaments', 'status']
 
     def create(self, validated_data):
         # Extract nested medicaments data
