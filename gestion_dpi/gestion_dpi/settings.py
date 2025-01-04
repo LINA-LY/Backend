@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'utilisateurs.apps.UtilisateursConfig',
     'dossier_patient',
     'rest_framework'
+    
 ]
 
 MIDDLEWARE = [
