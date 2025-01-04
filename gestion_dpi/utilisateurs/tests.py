@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from .models import Utilisateur,Patient, Ordonnance, Medicament
+from .models import Utilisateur
 from rest_framework.test import APIClient
 
 class LoginViewTest(TestCase):
