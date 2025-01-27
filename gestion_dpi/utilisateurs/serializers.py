@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import *
 
 class UtilisateurSerializer(serializers.ModelSerializer):
+    """Serializer for the Utilisateur model."""
+    
     class Meta:
         model = Utilisateur
         fields = ['id_utilisateur', 'nom', 'prenom', 'password', 'email']
@@ -9,12 +11,11 @@ class UtilisateurSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    # Override the creation method to create a hashed password
     def create(self, validated_data):
+        """Create a new Utilisateur instance with a hashed password."""
         password = validated_data.pop('password', None)
-        instance =self.Meta.model(**validated_data)
+        instance = self.Meta.model(**validated_data)
         if password is not None:
-            # set_password is pre-built function to hash password
             instance.set_password(password)
         else:
             instance.set_unusable_password()
@@ -22,6 +23,8 @@ class UtilisateurSerializer(serializers.ModelSerializer):
         return instance
 
 class AdministratifSerializer(serializers.ModelSerializer):
+    """Serializer for the Administratif model."""
+    
     class Meta:
         model = Administratif
         fields = ['id_utilisateur', 'nom', 'prenom', 'password', 'email']
@@ -29,12 +32,11 @@ class AdministratifSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    # Override the creation method to create a hashed password
     def create(self, validated_data):
+        """Create a new Administratif instance with a hashed password."""
         password = validated_data.pop('password', None)
-        instance =self.Meta.model(**validated_data)
+        instance = self.Meta.model(**validated_data)
         if password is not None:
-            # set_password is pre-built function to hash password
             instance.set_password(password)
         else:
             instance.set_unusable_password()
@@ -42,16 +44,17 @@ class AdministratifSerializer(serializers.ModelSerializer):
         return instance
 
 class MedecinSerializer(serializers.ModelSerializer):
+    """Serializer for the Medecin model."""
+    
     class Meta:
         model = Medecin
         fields = ['nom', 'prenom', 'specialite', 'password', 'email']
 
-    # Override the creation method to create a hashed password
     def create(self, validated_data):
+        """Create a new Medecin instance with a hashed password."""
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
         if password is not None:
-            # set_password is pre-built function to hash password
             instance.set_password(password)
         else:
             instance.set_unusable_password()
@@ -59,7 +62,8 @@ class MedecinSerializer(serializers.ModelSerializer):
         return instance
 
 class PatientSerializer(serializers.ModelSerializer):
-    # Use MedecinSerializer to handle medecin_traitant as an object, not just the ID
+    """Serializer for the Patient model."""
+    
     medecin_traitant = MedecinSerializer()
 
     class Meta:
@@ -70,78 +74,73 @@ class PatientSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        """Create a new Patient instance and handle nested Medecin instance."""
         password = validated_data.pop('password', None)
-        # Pop the nested medecin_traitant data
         medecin_traitant_data = validated_data.pop('medecin_traitant', None)
         
-        # Create the patient instance
         patient = self.Meta.model(**validated_data)
 
-        # If medecin_traitant data is provided, create the Medecin instance and assign it to the patient
         if medecin_traitant_data:
             medecin_traitant = Medecin.objects.create(**medecin_traitant_data)
             patient.medecin_traitant = medecin_traitant
 
-        patient.save()  # Save the patient instance
-
+        patient.save()
         return patient
 
-
-
-
-
 class MedicamentSerializer(serializers.ModelSerializer):
+    """Serializer for the Medicament model."""
+    
     class Meta:
         model = Medicament
         fields = ['id_medicament', 'nom', 'dosage', 'forme']
 
 class TraitementSerializer(serializers.ModelSerializer):
-    medicament = MedicamentSerializer()  # Nested serializer for medicament details
+    """Serializer for the Traitement model, which includes nested Medicament details."""
+    
+    medicament = MedicamentSerializer()
 
     class Meta:
         model = Traitement
         fields = ['id_traitement', 'medicament', 'quantite', 'description', 'duree', 'ordonnance']
 
     def create(self, validated_data):
+        """Create a new Traitement instance, handling nested Medicament data."""
         medicament_data = validated_data.pop('medicament')
         medicament, created = Medicament.objects.get_or_create(**medicament_data)
         traitement = Traitement.objects.create(medicament=medicament, **validated_data)
         return traitement
 
 class OrdonnanceSerializer(serializers.ModelSerializer):
-    medicaments = TraitementSerializer(many=True)  # Nested serializer for related treatments (medicaments)
+    """Serializer for the Ordonnance model, which includes nested Traitement data."""
+    
+    medicaments = TraitementSerializer(many=True)
 
     class Meta:
         model = Ordonnance
         fields = ['id_ordonnance', 'date', 'medecin', 'dpi_patient', 'medicaments', 'status']
 
     def create(self, validated_data):
-        # Extract nested medicaments data
+        """Create a new Ordonnance instance, processing nested Medicament and Traitement data."""
         medicaments_data = validated_data.pop('medicaments')
-
-        # Create the Ordonnance instance
         ordonnance = Ordonnance.objects.create(**validated_data)
 
-        # Process each medicament in the nested data
         for traitement_data in medicaments_data:
-            medicament_data = traitement_data.pop('medicament')  # Extract the nested Medicament data
-
-            # Either retrieve or create the Medicament instance
+            medicament_data = traitement_data.pop('medicament')
             medicament, created = Medicament.objects.get_or_create(**medicament_data)
-
-            # Create the Traitement instance and associate it with the ordonnance
             Traitement.objects.create(ordonnance=ordonnance, medicament=medicament, **traitement_data)
 
         return ordonnance
 
-
 class BilanBiologiqueSerializer(serializers.ModelSerializer):
+    """Serializer for the BilanBiologique model."""
+    
     class Meta:
         model = BilanBiologique
-        fields = ['id_bilan', 'date', 'glycimie','cholesteroel','pression_arterielle', 'description', 'dpi', 'laborantin','medecin']
-
+        fields = ['id_bilan', 'date', 'glycimie', 'cholesteroel', 'pression_arterielle', 'description', 'dpi', 'laborantin', 'medecin']
 
 class ResumeSerializer(serializers.ModelSerializer):
+    """Serializer for the Resume model."""
+    
     class Meta:
         model = Resume
-        fields = ['id_resume', 'date','antecedents','observations','diagnostic' , 'dpi', 'medecin']
+        fields = ['id_resume', 'date', 'antecedents', 'observations', 'diagnostic', 'dpi', 'medecin']

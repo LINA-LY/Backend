@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DPI Documentation &#8212; Documentation DPI 1.0</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=7a28dfa3"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="dpi-documentation">
+<h1>DPI Documentation<a class="headerlink" href="#dpi-documentation" title="Lien vers cette rubrique">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="py class" id="module-dossier_patient.models">
+<dt class="sig sig-object py" id="dossier_patient.models.CompteRendu">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.models.</span></span><span class="sig-name descname"><span class="pre">CompteRendu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.models.CompteRendu" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Représente un compte rendu médical pour un patient.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id (int): Identifiant unique pour chaque compte rendu.
+dossier_medical (ForeignKey): Référence au dossier médical lié au compte rendu.
+date (date): Date du compte rendu.
+radiologue (ForeignKey): Référence au radiologue ayant réalisé le compte rendu.
+description (str): Description du compte rendu.
+image_radio (ImageField): Image associée au compte rendu, comme une radiographie.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="dossier_patient.models.CompteRendu.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#dossier_patient.models.CompteRendu.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="dossier_patient.models.CompteRendu.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#dossier_patient.models.CompteRendu.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.models.DossierMedical">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.models.</span></span><span class="sig-name descname"><span class="pre">DossierMedical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.models.DossierMedical" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Représente le dossier médical d’un patient.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>patient (OneToOneField): Référence au patient propriétaire du dossier médical.
+qr_code (ImageField): Image du QR Code associée au patient, générée automatiquement.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="dossier_patient.models.DossierMedical.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#dossier_patient.models.DossierMedical.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="dossier_patient.models.DossierMedical.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#dossier_patient.models.DossierMedical.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.models.DossierMedical.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.models.DossierMedical.save" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Génère un QR Code basé sur le NSS du patient avant d’enregistrer l’instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.models.Soin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.models.</span></span><span class="sig-name descname"><span class="pre">Soin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.models.Soin" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Représente un soin réalisé pour un patient.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id (int): Identifiant unique pour chaque soin.
+date (date): Date à laquelle le soin a été effectué.
+medicaments_administres (str): Description des médicaments administrés.
+soins_infirmiers (str): Description des soins infirmiers effectués.
+observations (str): Observations effectuées pendant le soin.
+infirmier (ForeignKey): Référence à l’infirmier ayant effectué le soin.
+dossier_medical (ForeignKey): Référence au dossier médical auquel le soin appartient.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="dossier_patient.models.Soin.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#dossier_patient.models.Soin.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="dossier_patient.models.Soin.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#dossier_patient.models.Soin.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function" id="module-dossier_patient.views">
+<dt class="sig sig-object py" id="dossier_patient.views.ajouter_compte_rendu">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">ajouter_compte_rendu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prenom</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.ajouter_compte_rendu" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Ajouter un compte rendu à un dossier médical pour un patient spécifique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP contenant les données du formulaire de compte rendu.
+nss (str): Le numéro de sécurité sociale du patient.
+nom (str): Le nom du patient.
+prenom (str): Le prénom du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP redirigeant vers le tableau de bord après ajout ou affichant une erreur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.ajouter_soin">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">ajouter_soin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prenom</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.ajouter_soin" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Ajouter un soin à un dossier médical pour un patient spécifique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP contenant les données du formulaire de soin.
+nss (str): Le numéro de sécurité sociale du patient.
+nom (str): Le nom du patient.
+prenom (str): Le prénom du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP redirigeant vers le tableau de bord après ajout ou affichant une erreur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.create_dpi">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">create_dpi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.create_dpi" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Creates a new Dossier Patient Informatisé (DPI) by sending form data to the API.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request object containing the form data for creating a DPI.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A redirect to the created DPI’s page if successful, or back to the creation form
+with an error message if the creation fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.dashboard">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.dashboard" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Displays the dashboard for different roles (Medecin, Patient, Radiologue, etc.) based 
+on the user’s role stored in the session.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request object containing session data and headers.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A rendered template for the appropriate dashboard based on the user’s role.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.get_auth_headers">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">get_auth_headers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.get_auth_headers" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Retrieves authentication headers from the session for API requests.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request object containing the session with the JWT token.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A dictionary containing the Authorization header with the bearer token.</p>
+</dd>
+<dt>Raises:</dt><dd><p>PermissionError: If the authentication token is missing from the session.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.lister_compte_rendus">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">lister_compte_rendus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.lister_compte_rendus" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Lister tous les comptes rendus associés à un patient spécifique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP.
+nss (str): Le numéro de sécurité sociale du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP affichant la liste des comptes rendus du patient.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.lister_soins">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">lister_soins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.lister_soins" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Lister tous les soins associés à un patient spécifique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP.
+nss (str): Le numéro de sécurité sociale du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP affichant la liste des soins du patient.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.login">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.login" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Handles user login by accepting email and password via a POST request, sending 
+the credentials to the API, and storing the authentication token and user details 
+in the session upon successful login.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request object.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: Redirects to the dashboard if login is successful, or to the 
+login page if unsuccessful or an error occurs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.logout">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.logout" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Logs out the user by clearing the session data and redirecting to the login page.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request object.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: Redirects to the login page after logging out.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.rediger_bilan">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">rediger_bilan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.rediger_bilan" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Permet de rédiger un bilan médical pour un patient spécifique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP contenant les données du bilan.
+nss (str): Le numéro de sécurité sociale du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP redirigeant vers la page de recherche DPI ou affichant une erreur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.rediger_resume">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">rediger_resume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.rediger_resume" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Permet de rédiger un résumé médical pour un patient spécifique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP contenant les données du résumé.
+nss (str): Le numéro de sécurité sociale du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP redirigeant vers la page de recherche DPI ou affichant une erreur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.remplir_bilan">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">remplir_bilan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_bilan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prenom</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.remplir_bilan" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Permet de remplir un bilan médical avec des résultats.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP contenant les données du formulaire.
+id_bilan (str): L’identifiant du bilan à remplir.
+nom (str): Le nom du patient.
+prenom (str): Le prénom du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP redirigeant vers le tableau de bord après avoir rempli le bilan ou affichant une erreur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.search_dpi">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">search_dpi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.search_dpi" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Rechercher un dossier médical basé sur le numéro de sécurité sociale (NSS).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): La requête HTTP contenant le NSS du patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>HttpResponse: La réponse HTTP affichant le dossier médical ou un message d’erreur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dossier_patient.views.view_dpi">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.views.</span></span><span class="sig-name descname"><span class="pre">view_dpi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.views.view_dpi" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Displays a specific Dossier Patient Informatisé (DPI) based on the patient’s NSS.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request object.
+nss: The National Social Security number of the patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>A rendered template displaying the specific DPI, or an error message if the DPI
+is not found or the user is not authorized.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class" id="module-dossier_patient.serializers">
+<dt class="sig sig-object py" id="dossier_patient.serializers.CompteRenduSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.serializers.</span></span><span class="sig-name descname"><span class="pre">CompteRenduSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.serializers.CompteRenduSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer pour le modèle CompteRendu.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>radiologue (UtilisateurSerializer): Radiologue associé au compte rendu, en lecture seule.
+Meta (class): Classe contenant les métadonnées du serializer, comme le modèle et les champs.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.serializers.CompteRenduSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#dossier_patient.serializers.CompteRenduSerializer.Meta" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Métadonnées pour le serializer CompteRendu.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dossier_patient.serializers.CompteRenduSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#dossier_patient.serializers.CompteRenduSerializer.Meta.model" title="Lien vers cette définition">¶</a></dt>
+<dd><p>alias de <a class="reference internal" href="#dossier_patient.models.CompteRendu" title="dossier_patient.models.CompteRendu"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompteRendu</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.serializers.CompteRenduSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.serializers.CompteRenduSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Crée une instance de CompteRendu.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>validated_data (dict): Données validées pour la création du compte rendu.</p>
+</dd>
+<dt>Returns:</dt><dd><p>CompteRendu: Instance créée du modèle CompteRendu.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.serializers.DossierMedicalSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.serializers.</span></span><span class="sig-name descname"><span class="pre">DossierMedicalSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.serializers.DossierMedicalSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer pour le modèle DossierMedical.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>patient (PatientSerializer): Serializer pour le patient associé au dossier médical.
+Meta (class): Classe contenant les métadonnées du serializer, comme le modèle et les champs.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.serializers.DossierMedicalSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#dossier_patient.serializers.DossierMedicalSerializer.Meta" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Métadonnées pour le serializer DossierMedical.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dossier_patient.serializers.DossierMedicalSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#dossier_patient.serializers.DossierMedicalSerializer.Meta.model" title="Lien vers cette définition">¶</a></dt>
+<dd><p>alias de <a class="reference internal" href="#dossier_patient.models.DossierMedical" title="dossier_patient.models.DossierMedical"><code class="xref py py-class docutils literal notranslate"><span class="pre">DossierMedical</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.serializers.SoinSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.serializers.</span></span><span class="sig-name descname"><span class="pre">SoinSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.serializers.SoinSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer pour le modèle Soin.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>infirmier (UtilisateurSerializer): Infirmier associé au soin, en lecture seule.
+Meta (class): Classe contenant les métadonnées du serializer, comme le modèle et les champs.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.serializers.SoinSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#dossier_patient.serializers.SoinSerializer.Meta" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Métadonnées pour le serializer Soin.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dossier_patient.serializers.SoinSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#dossier_patient.serializers.SoinSerializer.Meta.model" title="Lien vers cette définition">¶</a></dt>
+<dd><p>alias de <a class="reference internal" href="#dossier_patient.models.Soin" title="dossier_patient.models.Soin"><code class="xref py py-class docutils literal notranslate"><span class="pre">Soin</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.serializers.SoinSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.serializers.SoinSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Crée une instance de Soin.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>validated_data (dict): Données validées pour la création du soin.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Soin: Instance créée du modèle Soin.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-dossier_patient.api">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.api.</span></span><span class="sig-name descname"><span class="pre">DossierMedicalViewSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet" title="Lien vers cette définition">¶</a></dt>
+<dd><p>A viewset for managing Dossier Medical records.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.ajouter_compte_rendu">
+<span class="sig-name descname"><span class="pre">ajouter_compte_rendu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.ajouter_compte_rendu" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Add a new compte rendu to a patient’s Dossier Medical.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing compte rendu data.
+pk: The NSS of the patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: The created compte rendu data or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.ajouter_soin">
+<span class="sig-name descname"><span class="pre">ajouter_soin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.ajouter_soin" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Add a new soin to a patient’s Dossier Medical.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing soin data.
+pk: The NSS of the patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: The created soin data or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Dossier Medical and its associated Patient record.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing patient data.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: The created patient data and QR code, or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.list" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Retrieve all Dossier Medical records.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: A list of serialized Dossier Medical records.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.lister_bilans">
+<span class="sig-name descname"><span class="pre">lister_bilans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.lister_bilans" title="Lien vers cette définition">¶</a></dt>
+<dd><p>List all Bilans Biologiques for a given patient’s NSS.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing the NSS as a query parameter.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A list of Bilans Biologiques or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.lister_compte_rendus">
+<span class="sig-name descname"><span class="pre">lister_compte_rendus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.lister_compte_rendus" title="Lien vers cette définition">¶</a></dt>
+<dd><p>List all compte rendus for a given patient’s NSS.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing the NSS as a query parameter.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A list of compte rendus or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.lister_dossier_complet">
+<span class="sig-name descname"><span class="pre">lister_dossier_complet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.lister_dossier_complet" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Retrieve the complete Dossier Medical for a patient, including associated records.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request.
+pk: The NSS of the patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A dictionary containing the Dossier Medical and related records.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.lister_soins">
+<span class="sig-name descname"><span class="pre">lister_soins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.lister_soins" title="Lien vers cette définition">¶</a></dt>
+<dd><p>List all soins for a given patient’s NSS.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing the NSS as a query parameter.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A list of soins or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.remplir_resultat_bilan">
+<span class="sig-name descname"><span class="pre">remplir_resultat_bilan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.remplir_resultat_bilan" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Fill in the results for a specific Bilan Biologique.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request containing the results data.
+pk: The ID of the Bilan.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A success message with updated Bilan data or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.DossierMedicalViewSet.retrieve">
+<span class="sig-name descname"><span class="pre">retrieve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.DossierMedicalViewSet.retrieve" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Retrieve a Dossier Medical by the patient’s NSS.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request.
+pk: The NSS of the patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: The serialized Dossier Medical or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dossier_patient.api.OrdonnanceViewSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dossier_patient.api.</span></span><span class="sig-name descname"><span class="pre">OrdonnanceViewSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.OrdonnanceViewSet" title="Lien vers cette définition">¶</a></dt>
+<dd><p>A viewset for managing Ordonnances.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.OrdonnanceViewSet.envoyer_a_sgph">
+<span class="sig-name descname"><span class="pre">envoyer_a_sgph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.OrdonnanceViewSet.envoyer_a_sgph" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Send Ordonnances data to an external SGPH system.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: The response from the SGPH system or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dossier_patient.api.OrdonnanceViewSet.lister_ordonnances">
+<span class="sig-name descname"><span class="pre">lister_ordonnances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dossier_patient.api.OrdonnanceViewSet.lister_ordonnances" title="Lien vers cette définition">¶</a></dt>
+<dd><p>List all Ordonnances along with their associated Traitements.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request: The HTTP request.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A list of Ordonnances with their associated Traitements or an error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dossier_patient.api.OrdonnanceViewSet.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#dossier_patient.api.OrdonnanceViewSet.serializer_class" title="Lien vers cette définition">¶</a></dt>
+<dd><p>alias de <a class="reference internal" href="#utilisateurs.serializers.OrdonnanceSerializer" title="utilisateurs.serializers.OrdonnanceSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdonnanceSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data" id="module-dossier_patient.test_dpi_creation">
+<dt class="sig sig-object py" id="dossier_patient.test_dpi_creation.driver">
+<span class="sig-prename descclassname"><span class="pre">dossier_patient.test_dpi_creation.</span></span><span class="sig-name descname"><span class="pre">driver</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;selenium.webdriver.chrome.webdriver.WebDriver</span> <span class="pre">(session=&quot;ba2c5e791b3e00bf37d1d64a7f30c047&quot;)&gt;</span></em><a class="headerlink" href="#dossier_patient.test_dpi_creation.driver" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Log in as Médecin on the web application.</p>
+<p>This step involves opening the login page, entering email and password, 
+and clicking the login button. Afterward, the successful login is verified 
+by checking if the dashboard page is loaded.</p>
+</dd></dl>
+
+<dl class="py class" id="module-utilisateurs.models">
+<dt class="sig sig-object py" id="utilisateurs.models.Administratif">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Administratif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Administratif" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing an administrative user, inheriting from Utilisateur with admin privileges.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>is_staff (BooleanField): Grants access to Django admin interface (True).
+is_superuser (BooleanField): Grants superuser privileges (False).</p>
+</dd>
+<dt>Methods:</dt><dd><p>has_perm(perm, obj=None): Checks if the administrative user has a specific permission.
+has_module_perms(app_label): Checks if the administrative user has access to a specific app.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Administratif.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Administratif.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Administratif.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Administratif.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Administratif.has_module_perms">
+<span class="sig-name descname"><span class="pre">has_module_perms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Administratif.has_module_perms" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Checks if the administrative user has access to a specific app.
+By default, they have access to all apps.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>app_label (str): The label of the app to check.</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: True if the user has access to the app, otherwise False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Administratif.has_perm">
+<span class="sig-name descname"><span class="pre">has_perm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Administratif.has_perm" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Checks if the administrative user has a specific permission.
+By default, grants all permissions since they are considered “admin” by role.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>perm (str): The permission to check.
+obj (optional): The object for the permission check.</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: True if the user has the permission, otherwise False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.BilanBiologique">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">BilanBiologique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.BilanBiologique" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a biological test report for a patient.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_bilan (AutoField): The unique ID for the biological test.
+date (DateField): The date the test was performed.
+description (TextField): The description of the test results.
+medecin (ForeignKey): The doctor who ordered the test.</p>
+</dd>
+<dt>Methods:</dt><dd><p>__str__(): Returns a string representation of the biological test report.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.BilanBiologique.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.BilanBiologique.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.BilanBiologique.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.BilanBiologique.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Infirmier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Infirmier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Infirmier" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a nurse, inheriting from Utilisateur.</p>
+<dl class="simple">
+<dt>Methods:</dt><dd><p>get_user_type(): Returns the user type as “Infirmier”.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Infirmier.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Infirmier.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Infirmier.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Infirmier.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Infirmier.get_user_type">
+<span class="sig-name descname"><span class="pre">get_user_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Infirmier.get_user_type" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Returns the user type as “Infirmier”.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The string “Infirmier”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Laborantin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Laborantin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Laborantin" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a lab technician, inheriting from Utilisateur.</p>
+<dl class="simple">
+<dt>Methods:</dt><dd><p>get_user_type(): Returns the user type as “Laborantin”.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Laborantin.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Laborantin.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Laborantin.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Laborantin.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Laborantin.get_user_type">
+<span class="sig-name descname"><span class="pre">get_user_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Laborantin.get_user_type" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Returns the user type as “Laborantin”.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The string “Laborantin”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Medecin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Medecin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Medecin" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a doctor, inheriting from Utilisateur with additional specialty.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>specialite (CharField): The specialty of the doctor (default is “generaliste”).</p>
+</dd>
+<dt>Methods:</dt><dd><p>get_user_type(): Returns the user type as “Medecin”.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Medecin.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Medecin.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Medecin.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Medecin.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Medecin.get_user_type">
+<span class="sig-name descname"><span class="pre">get_user_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Medecin.get_user_type" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Returns the user type as “Medecin”.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The string “Medecin”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Medicament">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Medicament</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Medicament" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a medication prescribed for a treatment.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_medicament (AutoField): The unique ID for the medication.
+nom (CharField): The name of the medication.
+dosage (CharField): The dosage of the medication (e.g., 500mg, 1000mg).
+forme (CharField): The form of the medication (e.g., Tablet, Syrup).</p>
+</dd>
+<dt>Methods:</dt><dd><p>__str__(): Returns a string representation of the medication with its name, dosage, and form.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Medicament.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Medicament.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Medicament.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Medicament.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Ordonnance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Ordonnance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Ordonnance" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a prescription given by a doctor.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_ordonnance (AutoField): The unique ID for the prescription.
+date (DateField): The date the prescription was issued.
+medecin (ForeignKey): The doctor who issued the prescription.
+dpi_patient (ForeignKey): The patient’s medical record.
+status (CharField): The current status of the prescription.</p>
+</dd>
+<dt>Methods:</dt><dd><p>__str__(): Returns a string representation of the prescription with patient, doctor, and date details.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Ordonnance.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Ordonnance.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Ordonnance.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Ordonnance.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Patient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Patient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Patient" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a patient, inheriting from Utilisateur with medical information.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>nss (CharField): The unique social security number of the patient.
+date_naissance (DateField): The birthdate of the patient.
+adresse (TextField): The address of the patient.
+telephone (CharField): The phone number of the patient.
+medecin_traitant (ForeignKey): The primary doctor of the patient.
+mutuelle (CharField): The patient’s health insurance (optional).
+personne (TextField): A contact person for the patient.</p>
+</dd>
+<dt>Methods:</dt><dd><p>get_user_type(): Returns the user type as “Patient”.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Patient.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Patient.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Patient.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Patient.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Patient.get_user_type">
+<span class="sig-name descname"><span class="pre">get_user_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Patient.get_user_type" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Returns the user type as “Patient”.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The string “Patient”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Radiologue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Radiologue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Radiologue" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a radiologist, inheriting from Utilisateur.</p>
+<dl class="simple">
+<dt>Methods:</dt><dd><p>get_user_type(): Returns the user type as “Radiologue”.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Radiologue.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Radiologue.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Radiologue.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Radiologue.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Radiologue.get_user_type">
+<span class="sig-name descname"><span class="pre">get_user_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Radiologue.get_user_type" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Returns the user type as “Radiologue”.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The string “Radiologue”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.RapportImagerie">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">RapportImagerie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.RapportImagerie" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing an imaging report from a radiologist.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_rapport (AutoField): The unique ID for the imaging report.
+description (TextField): The description of the imaging result.
+date (DateField): The date the imaging report was created.
+radiologue (ForeignKey): The radiologist who issued the report.</p>
+</dd>
+<dt>Methods:</dt><dd><p>__str__(): Returns a string representation of the imaging report.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.RapportImagerie.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.RapportImagerie.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.RapportImagerie.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.RapportImagerie.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Resume">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Resume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Resume" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a summary of a patient’s medical history.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_resume (AutoField): The unique ID for the resume.
+date (DateField): The date of the resume.
+antecedents (TextField): Medical history or antecedents of the patient.
+observations (TextField): Observations during the medical consultation.
+diagnostic (TextField): Diagnosis made during the consultation.
+dpi (ForeignKey): Link to the Dossier Medical (DPI).
+medecin (ForeignKey): The doctor who created this resume.</p>
+</dd>
+<dt>Methods:</dt><dd><p>__str__(): Returns a string representation of the resume with the ID and date.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Resume.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Resume.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Resume.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Resume.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.SGPH">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">SGPH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.SGPH" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a SGPH user, inheriting from Utilisateur without additional attributes.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.SGPH.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.SGPH.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.SGPH.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.SGPH.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Traitement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Traitement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Traitement" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Model representing a treatment prescribed to a patient.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_traitement (AutoField): The unique ID for the treatment.
+medicament (ForeignKey): The medication prescribed in the treatment.
+quantite (IntegerField): The quantity of the medication to take per day.
+description (CharField): The description of when to take the medication.
+duree (CharField): The duration of the treatment.
+ordonnance (ForeignKey): The prescription associated with the treatment.</p>
+</dd>
+<dt>Methods:</dt><dd><p>__str__(): Returns a string representation of the treatment with medication details.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Traitement.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Traitement.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Traitement.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Traitement.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.models.Utilisateur">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.models.</span></span><span class="sig-name descname"><span class="pre">Utilisateur</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Utilisateur" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Base model for users in the system, with common attributes like name, email, password, and user permissions.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>id_utilisateur (AutoField): The unique ID for the user.
+nom (CharField): The last name of the user.
+prenom (CharField): The first name of the user.
+password (CharField): The user’s password.
+email (EmailField): The email address of the user.
+is_staff (BooleanField): Whether the user has access to the Django admin interface.
+is_superuser (BooleanField): Whether the user has superuser privileges.</p>
+</dd>
+<dt>Methods:</dt><dd><p>set_password(raw_password): Sets the password for the user.
+set_unusable_password(): Sets the password as unusable.
+get_user_type(): A method to be overridden in subclasses to return the user’s type.</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Utilisateur.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#utilisateurs.models.Utilisateur.DoesNotExist" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="utilisateurs.models.Utilisateur.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#utilisateurs.models.Utilisateur.MultipleObjectsReturned" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Utilisateur.get_user_type">
+<span class="sig-name descname"><span class="pre">get_user_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Utilisateur.get_user_type" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Abstract method to be implemented in subclasses to return the user’s type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Utilisateur.set_password">
+<span class="sig-name descname"><span class="pre">set_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Utilisateur.set_password" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Sets the password for the user.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>raw_password (str): The raw password to be hashed and set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.models.Utilisateur.set_unusable_password">
+<span class="sig-name descname"><span class="pre">set_unusable_password</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.models.Utilisateur.set_unusable_password" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Sets the password as unusable by setting it to an empty string or placeholder.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-utilisateurs.views">
+<dt class="sig sig-object py" id="utilisateurs.views.LoginView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">LoginView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.LoginView" title="Lien vers cette définition">¶</a></dt>
+<dd><p>View for user login, authenticates the user and generates a JWT token.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request containing the user’s email and password.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A response containing the JWT token and user details if authentication is successful.</p>
+</dd>
+<dt>Raises:</dt><dd><p>AuthenticationFailed: If the email or password is incorrect.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilisateurs.views.auth">
+<span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.auth" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Authenticate the user based on the JWT token provided in the request headers.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request containing the authorization token.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: Decoded payload of the JWT token if authentication is successful.</p>
+</dd>
+<dt>Raises:</dt><dd><p>AuthenticationFailed: If the token is missing, has an incorrect format, is expired, or is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilisateurs.views.getUserFromToken">
+<span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">getUserFromToken</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.getUserFromToken" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Extract the user from the JWT token in the request and return the user object.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request containing the authorization token.
+type (str, optional): Type of user to fetch based on the decoded token.</p>
+</dd>
+<dt>Returns:</dt><dd><p>User: A user object based on the decoded token’s user type and ID.</p>
+</dd>
+<dt>Raises:</dt><dd><p>AuthenticationFailed: If the token is invalid or does not contain required fields.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilisateurs.views.get_nss_by_id">
+<span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">get_nss_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.get_nss_by_id" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Retrieve the National Social Security (NSS) number of a patient by their ID.</p>
+<dl>
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request to retrieve the patient’s NSS.
+patient_id (int): The unique identifier of the patient.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A Response object containing the patient’s NSS number if found, or an error message if not found.</p>
+<dl class="simple">
+<dt>If the patient is found, returns the NSS in the format:</dt><dd><p>{« nss »: « &lt;NSS number&gt; »}</p>
+</dd>
+<dt>If the patient is not found, returns:</dt><dd><p>{« error »: « Patient not found. »}</p>
+</dd>
+<dt>In case of other exceptions, returns:</dt><dd><p>{« error »: « &lt;exception message&gt; »}</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><p>Patient.DoesNotExist: If no patient with the given ID exists in the database.
+Exception: For any other errors that might occur during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilisateurs.views.rediger_bilan">
+<span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">rediger_bilan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.rediger_bilan" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a bilan for a patient by a Medecin.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request containing bilan data.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A response indicating the success or failure of creating the bilan.</p>
+</dd>
+<dt>Raises:</dt><dd><p>AuthenticationFailed: If the user is not a Medecin or if the patient or DPI is missing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilisateurs.views.rediger_ordonnance">
+<span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">rediger_ordonnance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.rediger_ordonnance" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create an ordonnance for a patient by a Medecin.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request containing ordonnance data.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A response indicating the success or failure of creating the ordonnance.</p>
+</dd>
+<dt>Raises:</dt><dd><p>AuthenticationFailed: If the user is not a Medecin or if the patient or DPI is missing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilisateurs.views.rediger_resume">
+<span class="sig-prename descclassname"><span class="pre">utilisateurs.views.</span></span><span class="sig-name descname"><span class="pre">rediger_resume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.views.rediger_resume" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a resume for a patient by a Medecin.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>request (HttpRequest): The incoming request containing resume data.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: A response indicating the success or failure of creating the resume.</p>
+</dd>
+<dt>Raises:</dt><dd><p>AuthenticationFailed: If the user is not a Medecin or if the patient or DPI is missing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class" id="module-utilisateurs.serializers">
+<dt class="sig sig-object py" id="utilisateurs.serializers.AdministratifSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">AdministratifSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.AdministratifSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Administratif model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.serializers.AdministratifSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.AdministratifSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Administratif instance with a hashed password.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.BilanBiologiqueSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">BilanBiologiqueSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.BilanBiologiqueSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the BilanBiologique model.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.MedecinSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">MedecinSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.MedecinSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Medecin model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.serializers.MedecinSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.MedecinSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Medecin instance with a hashed password.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.MedicamentSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">MedicamentSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.MedicamentSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Medicament model.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.OrdonnanceSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">OrdonnanceSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.OrdonnanceSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Ordonnance model, which includes nested Traitement data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.serializers.OrdonnanceSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.OrdonnanceSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Ordonnance instance, processing nested Medicament and Traitement data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.PatientSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">PatientSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.PatientSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Patient model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.serializers.PatientSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.PatientSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Patient instance and handle nested Medecin instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.ResumeSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">ResumeSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.ResumeSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Resume model.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.TraitementSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">TraitementSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.TraitementSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Traitement model, which includes nested Medicament details.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.serializers.TraitementSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.TraitementSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Traitement instance, handling nested Medicament data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.serializers.UtilisateurSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.serializers.</span></span><span class="sig-name descname"><span class="pre">UtilisateurSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.UtilisateurSerializer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Serializer for the Utilisateur model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.serializers.UtilisateurSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.serializers.UtilisateurSerializer.create" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new Utilisateur instance with a hashed password.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-utilisateurs.tests">
+<dt class="sig sig-object py" id="utilisateurs.tests.LoginViewTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.tests.</span></span><span class="sig-name descname"><span class="pre">LoginViewTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.LoginViewTest" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test case for user login functionality.</p>
+<p>This test case checks successful login with valid credentials and failure with invalid credentials.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.LoginViewTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.LoginViewTest.setUp" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Set up test data for login functionality.</p>
+<p>Creates a user with email and password for login testing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.LoginViewTest.test_login_failure_invalid_credentials">
+<span class="sig-name descname"><span class="pre">test_login_failure_invalid_credentials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.LoginViewTest.test_login_failure_invalid_credentials" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test login with invalid credentials.</p>
+<p>This test ensures that an incorrect email or password results in a 403 FORBIDDEN 
+status code.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.LoginViewTest.test_login_success">
+<span class="sig-name descname"><span class="pre">test_login_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.LoginViewTest.test_login_success" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test login with valid credentials.</p>
+<p>This test ensures that the user can log in with valid credentials and receives 
+a token in the response.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilisateurs.tests.OrdonnanceCreateTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilisateurs.tests.</span></span><span class="sig-name descname"><span class="pre">OrdonnanceCreateTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.OrdonnanceCreateTestCase" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test case for creating an ordonnance (prescription).</p>
+<p>This test case checks various scenarios for creating an ordonnance, including success,
+unauthorized access, and handling invalid user roles (non-medical users).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.OrdonnanceCreateTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.OrdonnanceCreateTestCase.setUp" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Set up test data for the ordonnance creation tests.</p>
+<p>Creates a Medecin (authenticated user), a Patient, and a DossierMedical (patient’s record). 
+A JWT token for the Medecin is also generated for authentication in requests.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.OrdonnanceCreateTestCase.test_create_ordonnance_not_medecin">
+<span class="sig-name descname"><span class="pre">test_create_ordonnance_not_medecin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.OrdonnanceCreateTestCase.test_create_ordonnance_not_medecin" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test ordonnance creation by a non-Medecin user.</p>
+<p>This test simulates an attempt to create an ordonnance by a user who is not a Medecin 
+and ensures that a 403 FORBIDDEN status is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.OrdonnanceCreateTestCase.test_create_ordonnance_success">
+<span class="sig-name descname"><span class="pre">test_create_ordonnance_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.OrdonnanceCreateTestCase.test_create_ordonnance_success" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test successful creation of an ordonnance by an authenticated Medecin.</p>
+<p>The test ensures that the ordonnance is created correctly in the database
+and that a success message is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilisateurs.tests.OrdonnanceCreateTestCase.test_create_ordonnance_unauthenticated">
+<span class="sig-name descname"><span class="pre">test_create_ordonnance_unauthenticated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilisateurs.tests.OrdonnanceCreateTestCase.test_create_ordonnance_unauthenticated" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Test ordonnance creation without authentication.</p>
+<p>This test ensures that a 403 FORBIDDEN status is returned when no JWT token 
+is provided for authentication.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">DPI</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Nadjiba.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

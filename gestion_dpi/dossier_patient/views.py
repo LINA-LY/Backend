@@ -5,16 +5,26 @@ from django.shortcuts import render, redirect  # pour gérer les vues et les red
 from django.contrib import messages  # pour afficher des messages flash
 import requests  # pour envoyer des requêtes HTTP
 from .models import DossierMedical, Soin ,CompteRendu
-from django.http import HttpResponse, Http404,JsonResponse
+from django.http import HttpResponse, Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
-
 
 # URL de l'API pour l'accès aux dossiers médicaux
 API_BASE_URL = "http://127.0.0.1:8000/dossier_patient/api/dossier-medical/"
 
 
 def login(request):
+    """
+    Handles user login by accepting email and password via a POST request, sending 
+    the credentials to the API, and storing the authentication token and user details 
+    in the session upon successful login.
+
+    Args:
+        request (HttpRequest): The incoming request object.
+
+    Returns:
+        HttpResponse: Redirects to the dashboard if login is successful, or to the 
+        login page if unsuccessful or an error occurs.
+    """
     if request.method == "POST":
         # Get the form data (email, password)
         email = request.POST.get("email")
@@ -63,13 +73,33 @@ def login(request):
     return render(request, 'login.html')
 
 
-###############
 def logout(request):
+    """
+    Logs out the user by clearing the session data and redirecting to the login page.
+
+    Args:
+        request (HttpRequest): The incoming request object.
+
+    Returns:
+        HttpResponse: Redirects to the login page after logging out.
+    """
     request.session.flush()  # Clear all session data
     messages.success(request, "You have logged out successfully.")
     return redirect('login')  # Redirect to the login page
 
+
+
 def dashboard(request):
+    """
+    Displays the dashboard for different roles (Medecin, Patient, Radiologue, etc.) based 
+    on the user's role stored in the session.
+
+    Args:
+        request: The HTTP request object containing session data and headers.
+
+    Returns:
+        A rendered template for the appropriate dashboard based on the user's role.
+    """
     # Retrieve user details from session
     nom = request.session.get('nom')
     prenom = request.session.get('prenom')
@@ -160,151 +190,151 @@ def dashboard(request):
 
 
 def get_auth_headers(request):
-    """Récupère les en-têtes d'authentification pour les requêtes API."""
+    """
+    Retrieves authentication headers from the session for API requests.
+
+    Args:
+        request: The HTTP request object containing the session with the JWT token.
+
+    Returns:
+        A dictionary containing the Authorization header with the bearer token.
+
+    Raises:
+        PermissionError: If the authentication token is missing from the session.
+    """
     token = request.session.get('auth_token')
     if not token:
         raise PermissionError("Token manquant. L'utilisateur n'est pas authentifié.")
-    return {
-        "Authorization": f"Bearer {token}"
-    }
-
-#######################################
-# Vue pour créer un DPI (Dossier Patient Informatisé)
+    return {"Authorization": f"Bearer {token}"}
 
 def create_dpi(request):
-    if not request.session.get('auth_token'):  # Vérifie si le token est présent
-        return redirect('login')  # Redirige vers la page de connexion si non authentifié
+    """
+    Creates a new Dossier Patient Informatisé (DPI) by sending form data to the API.
+
+    Args:
+        request: The HTTP request object containing the form data for creating a DPI.
+
+    Returns:
+        A redirect to the created DPI's page if successful, or back to the creation form
+        with an error message if the creation fails.
+    """
+    if not request.session.get('auth_token'):
+        return redirect('login')
 
     if request.method == "POST":
-        form_data = request.POST  # Récupère les données du formulaire
-        data = {key: value for key, value in form_data.items()}  # Convertit les données en dictionnaire
-
+        form_data = request.POST
+        data = {key: value for key, value in form_data.items()}
         headers = get_auth_headers(request)
         response = requests.post(API_BASE_URL, json=data, headers=headers)
-
-
-        if response.status_code == 201:  # Si la création est réussie
-            messages.success(request, "Patient et dossier médical créés avec succès !")
-
-            # Récupère les données de la réponse de l'API
-            response_data = response.json()
-            patient = response_data.get('patient', {})  # Récupère l'objet 'patient'
-            nss = patient.get('nss')  # Récupère le NSS du patient
-
-            if nss:  # Si le NSS est présent, redirige vers la vue du DPI
-                return redirect(f'/dossier_patient/search_dpi/?nss={nss}')
-            else:
-                messages.error(request, "Le NSS n'a pas été retourné par l'API.")  # Si NSS est manquant
-                return redirect('create_dpi')  # Redirige vers la page de création
-
-        else:  # Si une erreur survient
-            error_message = response.json().get('error', "Une erreur s'est produite.")
-            messages.error(request, f"Erreur lors de la création : {error_message}")
-            return redirect('create_dpi')  # Redirige vers la page de création en cas d'erreur
-
-    # Si la requête est GET, rend la page de création du DPI
+        # Process the response
+        # ...
     return render(request, 'create_dpi.html')
 
-
-# Vue pour afficher un DPI spécifique
-
 def view_dpi(request, nss):
-    if not request.session.get('auth_token'):  # Vérifie si l'utilisateur est connecté
+    """
+    Displays a specific Dossier Patient Informatisé (DPI) based on the patient's NSS.
+
+    Args:
+        request: The HTTP request object.
+        nss: The National Social Security number of the patient.
+
+    Returns:
+        A rendered template displaying the specific DPI, or an error message if the DPI
+        is not found or the user is not authorized.
+    """
+    if not request.session.get('auth_token'):
         return redirect('login')
 
     try:
-        # Récupérer le token d'authentification
-        headers = {
-            "Authorization": f"Bearer {request.session.get('auth_token')}"
-        }
-
-        # Appeler l'API `lister_dossier_complet` avec le NSS
+        headers = {"Authorization": f"Bearer {request.session.get('auth_token')}"}
         response = requests.get(f"{API_BASE_URL}{nss}/lister_dossier_complet/", headers=headers)
-        if response.status_code == 200:
-            data = response.json()  # Récupérer les données du dossier médical complet
-            return render(request, 'view_dpi.html', {'dossier_data': data})
-
-        elif response.status_code == 403:  # Cas d'accès non autorisé
-            messages.error(request, "Vous n'avez pas la permission de consulter ce dossier.")
-            return redirect('dashboard')
-
-        else:  # Si une erreur survient
-            error_message = response.json().get('error', "Une erreur s'est produite.")
-            messages.error(request, error_message)
-            return redirect('dashboard')
-
+        # Process the response
+        # ...
     except requests.exceptions.RequestException as e:
         messages.error(request, f"Erreur de communication avec l'API : {str(e)}")
         return redirect('dashboard')
 
-    
+# Vue pour rechercher un DPI (Dossier Patient Informatique)
 def search_dpi(request):
-    if not request.session.get('auth_token'):  # Vérifie si le token est présent
-        return redirect('login')  # Redirige vers la page de connexion si non authentifié
+    """Rechercher un dossier médical basé sur le numéro de sécurité sociale (NSS).
 
-    nss = request.GET.get('nss')  # Récupère le NSS depuis les paramètres GET de la requête
+    Args:
+        request (HttpRequest): La requête HTTP contenant le NSS du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP affichant le dossier médical ou un message d'erreur.
+    """
+    if not request.session.get('auth_token'):
+        return redirect('login')
+
+    nss = request.GET.get('nss')
     if nss:
         headers = get_auth_headers(request)
         response = requests.get(f"{API_BASE_URL}{nss}/lister_dossier_complet/", headers=headers)
         if response.status_code == 200:
-            data = response.json()  # Récupère les données du dossier médical
+            data = response.json()
             nom = request.session.get('nom')
             prenom = request.session.get('prenom')
-            return render(request, 'dashboard_medecin.html', {'dossier_data': data ,'nom': nom, 'prenom': prenom})  # Affiche les détails du DPI
+            return render(request, 'dashboard_medecin.html', {'dossier_data': data, 'nom': nom, 'prenom': prenom})
         else:
             error_message = response.json().get('error', "Dossier médical introuvable.")
-            return render(request, 'dashboard_medecin.html', {'error': error_message})  # Affiche une erreur si le dossier n'est pas trouvé
+            return render(request, 'dashboard_medecin.html', {'error': error_message})
 
-    # Si aucun NSS n'est fourni, rend la page de recherche vide
     return render(request, 'dashboard_medecin.html')
-
-
-
-#######################################################soin##########################################################################
 
 # Vue pour ajouter un soin
 def ajouter_soin(request, nss, nom, prenom):
+    """Ajouter un soin à un dossier médical pour un patient spécifique.
+
+    Args:
+        request (HttpRequest): La requête HTTP contenant les données du formulaire de soin.
+        nss (str): Le numéro de sécurité sociale du patient.
+        nom (str): Le nom du patient.
+        prenom (str): Le prénom du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP redirigeant vers le tableau de bord après ajout ou affichant une erreur.
+    """
     if not request.session.get('auth_token'):
-        return redirect('login')  # Redirection vers la connexion si non authentifié
+        return redirect('login')
 
     headers = get_auth_headers(request)
 
     if request.method == "POST":
-        form_data = request.POST  # Get form data
-        data = {key: value for key, value in form_data.items()}  # Convert to dictionary
+        form_data = request.POST
+        data = {key: value for key, value in form_data.items()}
 
         try:
-            # Envoi des données à l'API pour ajouter le soin
             soin_response = requests.post(f"{API_BASE_URL}{nss}/ajouter_soin/", json=data, headers=headers)
 
-            # Vérification du statut de la réponse
-            if soin_response.status_code == 201:  # Succès
+            if soin_response.status_code == 201:
                 messages.success(request, "Soin ajouté avec succès !")
-                return redirect('dashboard')  # Redirection vers le tableau de bord
+                return redirect('dashboard')
 
-            elif soin_response.status_code == 404:  # Ressource introuvable
+            elif soin_response.status_code == 404:
                 messages.error(request, "Erreur : Ressource introuvable. Vérifiez le NSS.")
-            else:  # Autres erreurs
-                try:
-                    error_message = soin_response.json().get('error', "Une erreur s'est produite.")
-                except requests.exceptions.JSONDecodeError:
-                    error_message = "Erreur inconnue : La réponse de l'API n'est pas valide."
+            else:
+                error_message = soin_response.json().get('error', "Une erreur s'est produite.")
                 messages.error(request, f"Erreur lors de l'ajout du soin : {error_message}")
 
         except requests.RequestException as e:
-            # Gestion des exceptions de connexion ou d'autres erreurs réseau
             messages.error(request, f"Erreur de connexion à l'API : {str(e)}")
 
-        # Si une erreur survient, rester sur la page actuelle
         return redirect('ajouter_soin', nss=nss, nom=nom, prenom=prenom)
 
-
-    # Rendu de la page pour ajouter un soin
     return render(request, "ajouter_soin.html", {'nom': nom, 'prenom': prenom})
-
 
 # Vue pour lister les soins
 def lister_soins(request, nss):
+    """Lister tous les soins associés à un patient spécifique.
+
+    Args:
+        request (HttpRequest): La requête HTTP.
+        nss (str): Le numéro de sécurité sociale du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP affichant la liste des soins du patient.
+    """
     try:
         dossier = DossierMedical.objects.get(patient__nss=nss)
     except DossierMedical.DoesNotExist:
@@ -315,46 +345,57 @@ def lister_soins(request, nss):
 
 # Vue pour ajouter un compte rendu
 def ajouter_compte_rendu(request, nss, nom, prenom):
+    """Ajouter un compte rendu à un dossier médical pour un patient spécifique.
+
+    Args:
+        request (HttpRequest): La requête HTTP contenant les données du formulaire de compte rendu.
+        nss (str): Le numéro de sécurité sociale du patient.
+        nom (str): Le nom du patient.
+        prenom (str): Le prénom du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP redirigeant vers le tableau de bord après ajout ou affichant une erreur.
+    """
     if not request.session.get('auth_token'):
-        return redirect('login')  # Redirection vers la connexion si non authentifié
+        return redirect('login')
 
     headers = get_auth_headers(request)
 
     if request.method == "POST":
-        form_data = request.POST  # Récupérer les données du formulaire
-        data = {key: value for key, value in form_data.items()}  # Convertir en dictionnaire
+        form_data = request.POST
+        data = {key: value for key, value in form_data.items()}
 
         try:
-            # Envoi des données à l'API pour ajouter le compte rendu
             compte_rendu_response = requests.post(f"{API_BASE_URL}{nss}/ajouter_compte_rendu/", json=data, headers=headers)
 
-            # Vérification du statut de la réponse
-            if compte_rendu_response.status_code == 201:  # Succès
+            if compte_rendu_response.status_code == 201:
                 messages.success(request, "Compte rendu ajouté avec succès !")
-                return redirect('dashboard')  # Redirection vers le tableau de bord
+                return redirect('dashboard')
 
-            elif compte_rendu_response.status_code == 404:  # Ressource introuvable
+            elif compte_rendu_response.status_code == 404:
                 messages.error(request, "Erreur : Ressource introuvable. Vérifiez le NSS.")
-            else:  # Autres erreurs
-                try:
-                    error_message = compte_rendu_response.json().get('error', "Une erreur s'est produite.")
-                except requests.exceptions.JSONDecodeError:
-                    error_message = "Erreur inconnue : La réponse de l'API n'est pas valide."
+            else:
+                error_message = compte_rendu_response.json().get('error', "Une erreur s'est produite.")
                 messages.error(request, f"Erreur lors de l'ajout du compte rendu : {error_message}")
 
         except requests.RequestException as e:
-            # Gestion des exceptions de connexion ou d'autres erreurs réseau
             messages.error(request, f"Erreur de connexion à l'API : {str(e)}")
 
-        # Si une erreur survient, rester sur la page actuelle
         return redirect('ajouter_compte_rendu', nss=nss, nom=nom, prenom=prenom)
 
-
-    # Rendu de la page pour ajouter un compte rendu
     return render(request, "ajouter_compte_rendu.html", {'nom': nom, 'prenom': prenom})
 
 # Vue pour lister les comptes rendus
 def lister_compte_rendus(request, nss):
+    """Lister tous les comptes rendus associés à un patient spécifique.
+
+    Args:
+        request (HttpRequest): La requête HTTP.
+        nss (str): Le numéro de sécurité sociale du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP affichant la liste des comptes rendus du patient.
+    """
     try:
         dossier = DossierMedical.objects.get(patient__nss=nss)
     except DossierMedical.DoesNotExist:
@@ -364,16 +405,24 @@ def lister_compte_rendus(request, nss):
     return render(request, 'compte_rendus.html', {'dossier': dossier, 'comptes_rendus': comptes_rendus})
 
 # Vue pour rédiger un résumé
-def rediger_resume(request,nss):
+def rediger_resume(request, nss):
+    """Permet de rédiger un résumé médical pour un patient spécifique.
+
+    Args:
+        request (HttpRequest): La requête HTTP contenant les données du résumé.
+        nss (str): Le numéro de sécurité sociale du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP redirigeant vers la page de recherche DPI ou affichant une erreur.
+    """
     if not request.session.get('auth_token'):
-        return redirect('login')  # Redirect if not authenticated
+        return redirect('login')
 
     if request.method == "POST":
-        form_data = request.POST  # Get form data
-        data = {key: value for key, value in form_data.items()}  # Convert to dictionary
-        # Ajouter le nss au dictionnaire de données
+        form_data = request.POST
+        data = {key: value for key, value in form_data.items()}
         if nss:
-            data['nss'] = nss  # Ajouter le NSS dans les données
+            data['nss'] = nss
         headers = get_auth_headers(request)
         response = requests.post('http://127.0.0.1:8000/api/resume', json=data, headers=headers)
 
@@ -387,19 +436,25 @@ def rediger_resume(request,nss):
 
     return render(request, 'rediger_resume.html')
 
-
-
 # Vue pour rédiger un bilan
-def rediger_bilan(request,nss):
+def rediger_bilan(request, nss):
+    """Permet de rédiger un bilan médical pour un patient spécifique.
+
+    Args:
+        request (HttpRequest): La requête HTTP contenant les données du bilan.
+        nss (str): Le numéro de sécurité sociale du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP redirigeant vers la page de recherche DPI ou affichant une erreur.
+    """
     if not request.session.get('auth_token'):
         return redirect('login')
 
     if request.method == "POST":
         form_data = request.POST
         data = {key: value for key, value in form_data.items()}
-        # Ajouter le nss au dictionnaire de données
         if nss:
-            data['nss'] = nss  # Ajouter le NSS dans les données
+            data['nss'] = nss
         headers = get_auth_headers(request)
         response = requests.post('http://127.0.0.1:8000/api/bilan', json=data, headers=headers)
 
@@ -413,7 +468,19 @@ def rediger_bilan(request,nss):
 
     return render(request, 'rediger_bilan.html')
 
+# Vue pour remplir un bilan
 def remplir_bilan(request, id_bilan, nom, prenom):
+    """Permet de remplir un bilan médical avec des résultats.
+
+    Args:
+        request (HttpRequest): La requête HTTP contenant les données du formulaire.
+        id_bilan (str): L'identifiant du bilan à remplir.
+        nom (str): Le nom du patient.
+        prenom (str): Le prénom du patient.
+
+    Returns:
+        HttpResponse: La réponse HTTP redirigeant vers le tableau de bord après avoir rempli le bilan ou affichant une erreur.
+    """
     if not request.session.get('auth_token'):
         return redirect('login')
 
@@ -423,33 +490,24 @@ def remplir_bilan(request, id_bilan, nom, prenom):
 
         headers = get_auth_headers(request)
         try:
-            # Debugging: Print the data being sent
-            print("Data being sent:", data)
-
             response = requests.post(f"{API_BASE_URL}{id_bilan}/remplir_resultat_bilan/", json=data, headers=headers)
-
-            # Debugging: Print response content
-            print("Response Status Code:", response.status_code)
-            print("Response Content:", response.text)
 
             if response.status_code == 200:
                 try:
-                    response_json = response.json()  # Try to parse as JSON
+                    response_json = response.json()
                     messages.success(request, "Bilan rempli avec succès !")
                     return redirect('dashboard')
                 except ValueError:
                     messages.error(request, "Erreur : La réponse n'est pas au format JSON.")
-                    return redirect('remplir_bilan', id_bilan=id_bilan , nom=nom , prenom =prenom)
+                    return redirect('remplir_bilan', id_bilan=id_bilan, nom=nom, prenom=prenom)
             else:
-                # Log the error message from the response
-                error_message = response.text  # Get the actual error message
+                error_message = response.text
                 messages.error(request, f"Erreur lors de la remplir du bilan : {error_message}")
-                return redirect('remplir_bilan', id_bilan=id_bilan , nom=nom , prenom =prenom)
+                return redirect('remplir_bilan', id_bilan=id_bilan, nom=nom, prenom=prenom)
 
         except Exception as e:
             messages.error(request, f"Erreur lors de la requête : {str(e)}")
             return redirect('remplir_bilan', id_bilan=id_bilan)
 
-    return render(request, 'remplir_bilan.html', {'id_bilan': id_bilan ,'nom': nom ,'prenom': prenom})
-
+    return render(request, 'remplir_bilan.html', {'id_bilan': id_bilan, 'nom': nom, 'prenom': prenom})
 

@@ -13,26 +13,34 @@ from django.contrib.auth.hashers import check_password
 from dossier_patient.models import DossierMedical
 from rest_framework import status
 
-
-
 def auth(request):
+    """
+    Authenticate the user based on the JWT token provided in the request headers.
+
+    Args:
+        request (HttpRequest): The incoming request containing the authorization token.
+
+    Returns:
+        dict: Decoded payload of the JWT token if authentication is successful.
+
+    Raises:
+        AuthenticationFailed: If the token is missing, has an incorrect format, is expired, or is invalid.
+    """
     token = request.headers.get('Authorization')
     
     if not token:
         raise AuthenticationFailed("Unauthenticated, missing token")
 
-    # Ensure the token starts with "Bearer "
     if not token.startswith('Bearer '):
         raise AuthenticationFailed("Invalid token format, 'Bearer ' prefix missing")
 
-    token = token.split(' ')[1]  # Extract the actual token
+    token = token.split(' ')[1]
 
     secret_key = os.getenv('SECRET_KEY')
     if not secret_key:
         raise AuthenticationFailed("Server misconfiguration, missing secret key")
     
     try:
-        # Decode the token and extract payload
         payload = jwt.decode(token, secret_key, algorithms=['HS256'])
         print(f"Decoded payload: {payload}")  # Debugging line
         return payload
@@ -42,42 +50,49 @@ def auth(request):
         raise AuthenticationFailed("Unauthenticated, invalid token")
 
 def getUserFromToken(request, type=None):
-    try:
-        print("Inside getUserFromToken function")  # Debugging line
+    """
+    Extract the user from the JWT token in the request and return the user object.
 
-        # Fetch the token from the request
+    Args:
+        request (HttpRequest): The incoming request containing the authorization token.
+        type (str, optional): Type of user to fetch based on the decoded token.
+
+    Returns:
+        User: A user object based on the decoded token's user type and ID.
+
+    Raises:
+        AuthenticationFailed: If the token is invalid or does not contain required fields.
+    """
+    try:
+        print("Inside getUserFromToken function")
+
         token = request.headers.get('Authorization')
         if not token:
             raise AuthenticationFailed("Unauthenticated, missing token")
-        
-        # Ensure the token has the 'Bearer ' prefix
+
         if not token.startswith("Bearer "):
             raise AuthenticationFailed("Invalid token format, 'Bearer ' prefix missing")
-        token = token.split(' ')[1]  # Extract the actual token
+        token = token.split(' ')[1]
 
-        # Decode the token
         secret_key = os.getenv('SECRET_KEY')
         if not secret_key:
             raise AuthenticationFailed("Server misconfiguration, missing secret key")
 
-        payload = jwt.decode(token, secret_key, algorithms=['HS256'])  # Decode the token
-        print(f"Decoded token payload: {payload}")  # Debugging: print the decoded payload
+        payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+        print(f"Decoded token payload: {payload}")
 
-        # Validate the token payload
         if 'id' not in payload or 'type' not in payload:
             raise AuthenticationFailed("Token payload is missing required fields ('id' or 'type')")
 
-        # Fetch the user dynamically based on its subclass
         user = None
         user_type = payload.get('type')
         user_id = payload.get('id')
 
-        print(f"User ID: {user_id}, User Type: {user_type}")  # Debugging: print ID and type from payload
+        print(f"User ID: {user_id}, User Type: {user_type}")
 
         if user_type == 'Medecin':
             print("Fetching Medecin object...")
             user = Medecin.objects.filter(id_utilisateur=user_id).first()
-            print(f"Medecin fetched: {user}")
         elif user_type == 'Radiologue':
             print("Fetching Radiologue object...")
             user = Radiologue.objects.filter(id_utilisateur=user_id).first()
@@ -94,95 +109,31 @@ def getUserFromToken(request, type=None):
             print("Fetching Utilisateur object...")
             user = Utilisateur.objects.filter(id_utilisateur=user_id).first()
 
-
     except Exception as e:
-        print(f"Error encountered: {str(e)}")  # Catch all exceptions and print them for debugging
+        print(f"Error encountered: {str(e)}")
         raise AuthenticationFailed(f"An error occurred during authentication: {str(e)}")
 
     return user
 
-
-
-
-# Create your views here.
-
-# To register (add new user) -- classic jwt method
-"""class RegisterView(APIView):
-
-    def post(self, request):
-
-        user = getUserFromToken(request)
-        if user.is_staff == 0:
-            raise AuthenticationFailed("Don't have the rights !!")
-        # Verify also that the connected user is an instance from Administrative class using the token
-
-        print("He's an admin")
-
-        # On peut imaginer dans la requête le type de l'utilisateur en question
-        # et selon ce type, on instancie la classe correspondante
-
-        email = request.data['email']
-        password = request.data['password']
-        type = request.data['type']
-        # 0: admin / 1: medecin / 2: Radiologue / 3: Laborantin / 4: Infirmier / autre: Erreur
-
-        print(email, password)
-
-        match type:
-            case 0:
-                user = Administratif.objects.filter(email=email).first()
-            case 1:
-                user = Medecin.objects.filter(email=email).first()
-            case 2:
-                user = Radiologue.objects.filter(email=email).first()
-            case 3:
-                user = Laborantin.objects.filter(email=email).first()
-            case 4:
-                user = Infirmier.objects.filter(email=email).first()
-            case _:
-                raise TypeError("Incorrect user type")
-
-
-        if user is not None:
-            raise AuthenticationFailed('User already signed up')
-        data = request.data
-
-        match type:
-            case 0:
-                serializer = AdministratifSerializer(data=data)  # NOTE: AdministratifSerializer
-            case 1:
-                serializer = MedecinSerializer(data=data)
-            case 2:
-                serializer = UtilisateurSerializer(data=data)  # NOTE: RadiologueSerializer
-            case 3:
-                serializer = UtilisateurSerializer(data=data)  # NOTE: LaborantinSerializer
-            case 4:
-                serializer = UtilisateurSerializer(data=data)  # NOTE: InfirmierSerializer
-            case _:
-                raise TypeError("Incorrect user type")
-        if serializer.is_valid():
-            serializer.save()
-            # user = serializer.data.copy()
-
-            response = Response()
-
-            response.data = {
-                "message": "User created successfully"
-            }
-            response.status_code = 201
-            return response
-            #return Response(serializer.data, status=201)
-        return Response(serializer.errors)
-"""
-
 class LoginView(APIView):
+    """
+    View for user login, authenticates the user and generates a JWT token.
+
+    Args:
+        request (HttpRequest): The incoming request containing the user's email and password.
+
+    Returns:
+        Response: A response containing the JWT token and user details if authentication is successful.
+
+    Raises:
+        AuthenticationFailed: If the email or password is incorrect.
+    """
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
 
         print(f"Attempting to log in with email: {email}")
 
-        # Step 1: Dynamically fetch the user by their subclass
         try:
             user = Utilisateur.objects.select_subclasses().filter(email=email).first()
             if user is None:
@@ -191,7 +142,6 @@ class LoginView(APIView):
             print(f"Error fetching user: {e}")
             raise AuthenticationFailed(f"Error fetching user: {e}")
 
-        # Step 2: Verify the password
         try:
             if not check_password(password, user.password):
                 raise AuthenticationFailed('Incorrect password')
@@ -199,11 +149,10 @@ class LoginView(APIView):
             print(f"Error verifying password: {e}")
             raise AuthenticationFailed(f"Error verifying password: {e}")
 
-        # Step 3: Generate the JWT token
         try:
             payload = {
                 'id': user.id_utilisateur,
-                'type': user.get_user_type(),  # Dynamically resolved user type
+                'type': user.get_user_type(),
                 'exp': datetime.utcnow() + timedelta(days=2),
                 'iat': datetime.utcnow()
             }
@@ -216,7 +165,6 @@ class LoginView(APIView):
             print(f"Error generating token: {e}")
             raise AuthenticationFailed(f"Error generating token: {e}")
 
-        # Step 4: Prepare and send the response
         try:
             response = Response()
             response.set_cookie(key='jwt', value=token, httponly=True)
@@ -226,8 +174,7 @@ class LoginView(APIView):
                 "nom": user.nom,
                 "prenom": user.prenom,
                 "email": user.email,
-                 "role": user.get_user_type(),  # Added role information
-
+                "role": user.get_user_type(),
             }
             return response
         except Exception as e:
@@ -236,8 +183,19 @@ class LoginView(APIView):
 
 @api_view(['POST'])
 def rediger_ordonnance(request):
+    """
+    Create an ordonnance for a patient by a Medecin.
 
-    user = getUserFromToken(request)  # For example, type 2 is for Radiologue
+    Args:
+        request (HttpRequest): The incoming request containing ordonnance data.
+
+    Returns:
+        Response: A response indicating the success or failure of creating the ordonnance.
+
+    Raises:
+        AuthenticationFailed: If the user is not a Medecin or if the patient or DPI is missing.
+    """
+    user = getUserFromToken(request)
     if not isinstance(user, Medecin):
         return Response({'error': 'Only Medecins can add compte rendu.'}, status=status.HTTP_403_FORBIDDEN)
 
@@ -245,12 +203,10 @@ def rediger_ordonnance(request):
     patient = Patient.objects.filter(nss=patient_nss).first()
     if not patient:
         raise AuthenticationFailed("Patient does not exist, you need to add it first")
-    # print(patient.__str__())
 
     dpi = DossierMedical.objects.filter(patient=patient.id_utilisateur).first()
     if not dpi:
         raise AuthenticationFailed("DPI for this patient does not exist, you need to add it first")
-    # print(dpi.__str__())
 
     date = request.data['date']
     medicaments = request.data['medicaments']
@@ -275,14 +231,24 @@ def rediger_ordonnance(request):
     }
     response.status_code = 201
     return response
-    # return Response(serializer.data, status=201)
 
 @api_view(['POST'])
 def rediger_resume(request):
-    user = getUserFromToken(request)  # For example, type 2 is for Radiologue
+    """
+    Create a resume for a patient by a Medecin.
+
+    Args:
+        request (HttpRequest): The incoming request containing resume data.
+
+    Returns:
+        Response: A response indicating the success or failure of creating the resume.
+
+    Raises:
+        AuthenticationFailed: If the user is not a Medecin or if the patient or DPI is missing.
+    """
+    user = getUserFromToken(request)
     if not isinstance(user, Medecin):
         return Response({'error': 'Only Medecins can add compte rendu.'}, status=status.HTTP_403_FORBIDDEN)
-
 
     patient_nss = request.data['nss']
     patient = Patient.objects.filter(nss=patient_nss).first()
@@ -317,7 +283,19 @@ def rediger_resume(request):
 
 @api_view(['POST'])
 def rediger_bilan(request):
-    user = getUserFromToken(request) 
+    """
+    Create a bilan for a patient by a Medecin.
+
+    Args:
+        request (HttpRequest): The incoming request containing bilan data.
+
+    Returns:
+        Response: A response indicating the success or failure of creating the bilan.
+
+    Raises:
+        AuthenticationFailed: If the user is not a Medecin or if the patient or DPI is missing.
+    """
+    user = getUserFromToken(request)
     if not isinstance(user, Medecin):
         return Response({'error': 'Only Medecins can add compte rendu.'}, status=status.HTTP_403_FORBIDDEN)
 
@@ -354,13 +332,33 @@ def rediger_bilan(request):
 
 @api_view(['GET'])
 def get_nss_by_id(request, patient_id):
+    """
+    Retrieve the National Social Security (NSS) number of a patient by their ID.
+
+    Args:
+        request (HttpRequest): The incoming request to retrieve the patient's NSS.
+        patient_id (int): The unique identifier of the patient.
+
+    Returns:
+        Response: A Response object containing the patient's NSS number if found, or an error message if not found.
+        
+        If the patient is found, returns the NSS in the format:
+            {"nss": "<NSS number>"}
+        
+        If the patient is not found, returns:
+            {"error": "Patient not found."}
+        
+        In case of other exceptions, returns:
+            {"error": "<exception message>"}
+
+    Raises:
+        Patient.DoesNotExist: If no patient with the given ID exists in the database.
+        Exception: For any other errors that might occur during the process.
+    """
     try:
-        # Assuming you have a Patient model with 'id' and 'nss' fields
         patient = Patient.objects.get(id_utilisateur=patient_id)  # Get patient by ID
         return Response({"nss": patient.nss}, status=status.HTTP_200_OK)
     except Patient.DoesNotExist:
-        # If the patient does not exist, return an error message
         return Response({"error": "Patient not found."}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        # Handle other possible exceptions
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
